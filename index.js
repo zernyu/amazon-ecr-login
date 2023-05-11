@@ -142,8 +142,8 @@ async function run() {
       // Execute the docker login command
       let doLoginStdout = '';
       let doLoginStderr = '';
-      const exitCode = await exec.exec(`echo | set /p="${creds[1]}" | docker login --username ${creds[0]} --password-stdin ${proxyEndpoint}`, {
-        silent: true,
+      const exitCode = await exec.exec('docker', ['login', '-u', creds[0], '-p', creds[1], proxyEndpoint], {
+        silent: false,
         ignoreReturnCode: true,
         listeners: {
           stdout: (data) => {
@@ -156,7 +156,7 @@ async function run() {
       });
       if (exitCode !== 0) {
         core.debug(doLoginStdout);
-        throw new Error(`Could not login to registry ${registryUri}: ${doLoginStderr}`);
+        throw new Error(`Could not login to registry ${registryUri}: ${doLoginStdout} err: ${doLoginStderr}`);
       }
 
       // Output docker username and password
