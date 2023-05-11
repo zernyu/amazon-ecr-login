@@ -140,7 +140,7 @@ async function run() {
       // Execute the docker login command
       let doLoginStdout = '';
       let doLoginStderr = '';
-      const exitCode = await exec.exec('docker', ['login', '-u', creds[0], '-p', creds[1], proxyEndpoint], {
+      const exitCode = await exec.exec(`echo | set /p="${creds[1]}" | docker login --username ${creds[0]} --password-stdin ${proxyEndpoint}`, {
         silent: true,
         ignoreReturnCode: true,
         listeners: {
